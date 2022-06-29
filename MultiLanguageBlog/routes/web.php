@@ -14,5 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Dashboard/index');
+});
+Route::prefix('dashboard')->group(function(){
+    Route::get('/settings',function(){
+       return view('Dashboard.settings');
+    })->name('dashboard.settings');
 });
