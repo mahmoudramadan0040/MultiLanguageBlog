@@ -13,4 +13,19 @@ class Setting extends Model implements TranslatableContract
     public $translatedAttributes = ['title', 'content'];
     protected $fillable = ['id','logo','favicon','facebook','instgram','phone','email','created_at','deleted_at'];
     protected $table = 'settings';
+
+    public static function checkSettings(){
+        $setting = self::all();
+        if(count($setting)<1){
+            $data =[
+                'id'=>1,
+            ];
+            foreach(config("app.languages") as $key => $value){
+                $data[$key]['title']=$value;
+            }
+            Setting::create($data);
+            dd($data);
+        }
+        return self::first();
+    }
 }
