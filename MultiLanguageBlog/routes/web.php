@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardSettingController;
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,19 @@ Route::get('/', function () {
     return view('Dashboard/index');
 });
 
-Route::group(['prefix'=>'dashboard','as'=>'dashboard.'], function (){
+Route::group(['prefix'=>'dashboard','as'=>'dashboard.','middleware'=>'auth'], function (){
+    Route::get('/',function(){
+        return view('Dashboard.layouts.layout');
+    })->name('settings');
+
     Route::get('/settings',function(){
         return view('Dashboard.settings');
     })->name('settings');
+
     Route::post('/settings/update/{setting}',[DashboardSettingController::class,'update'])->name('settings.update');
     
     
 });
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

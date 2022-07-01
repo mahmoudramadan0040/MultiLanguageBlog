@@ -12,8 +12,7 @@ class DashboardSettingController extends Controller
     // update client settings
     public function update(Request $request, Setting $setting)
     {
-        // Setting::create($request->all());
-        // dd($request->all());
+        
         $data =[
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'favicon' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
@@ -23,14 +22,16 @@ class DashboardSettingController extends Controller
             'email' => 'nullable|email',
         ];
         foreach(config('app.languages') as $key => $value){
-            $data[$key . '*.title']='nullable |string';
-            $data[$key . '*.content']='nullable |string';
-            $data[$key . '*.address']='nullable |string';
+            $data[$key . '*.title']= 'nullable |string';
+            $data[$key . '*.content']= 'nullable |string'; 
+            $data[$key . '*.address']= 'nullable |string';
 
         }
+        
+
         $validateData = $request->validate($data);
         $setting->update($request->except('image','favicon','_token'));
-        
+       
        
         if ($request->file('logo')) {
             $file = $request->file('logo');
@@ -46,7 +47,8 @@ class DashboardSettingController extends Controller
             $path = '/images/' . $filename;
             $setting->update(['favicon' => $path]);
         }
-        return redirect()->route('Dashboard.settings');
+        
+        return redirect()->route('dashboard.settings');
 
     }
     
